@@ -17,7 +17,6 @@ import { environment } from 'src/environments/environment.development';
 export class AddLinkPage implements OnInit {
   selectedTags: string[] = [];
   linkForm: FormGroup;
-  // private apiKey = '6604e7d7adc55f02ce67492fba901c82';
   private apiUrl = 'https://api.linkpreview.net/';
 
   constructor(
