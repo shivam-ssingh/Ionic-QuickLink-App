@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/home"
+        (click)="closeViewLink()"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Article Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openLink()">
+        <ion-icon name="open-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="shareLink()">
+        <ion-icon name="share-social-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-img
+      [src]="article.metadata?.extractedImage"
+      (ionError)="onImageError($event)"
+      (click)="openLink()"
+    ></ion-img>
+
+    <ion-card-header>
+      <ion-card-title>{{ article.title }}</ion-card-title>
+      <!-- <ion-card-subtitle>{{ article.url }}</ion-card-subtitle> -->
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>{{ article.description || article.metadata?.extractedDescription }}</p>
+
+      <ng-container *ngIf="article.tags?.length">
+        <ion-chip *ngFor="let tag of article.tags" color="secondary" outline>
+          <ion-icon name="pricetag-outline"></ion-icon>
+          <ion-label>Tags: {{ tag }}</ion-label>
+        </ion-chip>
+      </ng-container>
+
+      <p class="ion-padding-top">
+        <small>Added on: {{ article.dateAdded | date:'medium' }}</small>
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="showAIPreview">
+    <ion-card-header>
+      <ion-card-title>Gemini AI Article Preview</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{this.textResponse}}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -11,6 +11,14 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'add-link',
+    loadChildren: () => import('./pages/add-link/add-link.module').then( m => m.AddLinkPageModule)
+  },
+  {
+    path: 'view-article',
+    loadChildren: () => import('./pages/view-article/view-article.module').then( m => m.ViewArticlePageModule)
+  },
 ];
 
 @NgModule({

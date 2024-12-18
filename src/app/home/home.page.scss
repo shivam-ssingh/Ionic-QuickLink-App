@@ -25,3 +25,16 @@
 #container a {
   text-decoration: none;
 }
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+}

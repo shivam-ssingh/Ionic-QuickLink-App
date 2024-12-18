@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" (click)="cancel()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add New Link</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form
+    [formGroup]="linkForm"
+    (ngSubmit)="onSubmit()"
+    (keydown.enter)="$event.preventDefault()"
+  >
+    <ion-item>
+      <ion-input
+        label="URL"
+        labelPlacement="stacked"
+        placeholder="Enter your URL here!"
+        formControlName="url"
+        name="url"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea
+        label="Description"
+        labelPlacement="stacked"
+        placeholder="Enter your Description"
+        formControlName="description"
+        name="description"
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Add Tags</ion-label>
+      <ion-chip *ngFor="let tag of selectedTags" color="primary">
+        {{ tag }}
+        <ion-icon name="close-circle" (click)="removeTag(tag)"></ion-icon>
+      </ion-chip>
+    </ion-item>
+
+    <ion-item>
+      <ion-input
+        #tagInput
+        placeholder="Type and press enter to add tag"
+        (keyup.enter)="addTag(tagInput)"
+      >
+      </ion-input>
+    </ion-item>
+
+    <div class="ion-padding-top">
+      <ion-button expand="block" type="submit">
+        <!-- [disabled]="linkForm.invalid" -->
+        Save Article
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
