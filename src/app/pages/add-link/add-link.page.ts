@@ -7,6 +7,7 @@ import { FileConstant } from 'src/app/models/constants';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-add-link',
@@ -16,7 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class AddLinkPage implements OnInit {
   selectedTags: string[] = [];
   linkForm: FormGroup;
-  private apiKey = '6604e7d7adc55f02ce67492fba901c82';
+  // private apiKey = '6604e7d7adc55f02ce67492fba901c82';
   private apiUrl = 'https://api.linkpreview.net/';
 
   constructor(
@@ -89,7 +90,9 @@ export class AddLinkPage implements OnInit {
   // }
   async extractMetadata(url: string) {
     return await firstValueFrom(
-      this.http.get<any>(`${this.apiUrl}?key=${this.apiKey}&q=${url}`)
+      this.http.get<any>(
+        `${this.apiUrl}?key=${environment.METADATA_KEY}&q=${url}`
+      )
     );
   }
   cancel() {
