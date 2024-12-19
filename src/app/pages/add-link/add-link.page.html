@@ -22,6 +22,12 @@
         name="url"
       ></ion-input>
     </ion-item>
+    <ion-text
+      color="danger"
+      *ngIf="linkForm.get('url')?.invalid && linkForm.get('url')?.touched"
+    >
+      <small>Please enter a valid URL</small>
+    </ion-text>
     <ion-item>
       <ion-textarea
         label="Description"
@@ -50,8 +56,7 @@
     </ion-item>
 
     <div class="ion-padding-top">
-      <ion-button expand="block" type="submit">
-        <!-- [disabled]="linkForm.invalid" -->
+      <ion-button [disabled]="linkForm.invalid" expand="block" type="submit">
         Save Article
       </ion-button>
     </div>

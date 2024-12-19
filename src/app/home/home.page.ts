@@ -6,6 +6,7 @@ import { Preferences } from '@capacitor/preferences';
 import { Article } from '../models/article.model';
 import { Share } from '@capacitor/share';
 import { ViewArticlePage } from '../pages/view-article/view-article.page';
+import { ArticleService } from '../services/article.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,8 @@ export class HomePage implements OnInit {
 
   constructor(
     private modalController: ModalController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private articleService: ArticleService
   ) {}
 
   async ngOnInit() {
@@ -27,11 +29,7 @@ export class HomePage implements OnInit {
   }
 
   async loadArticles() {
-    const { value } = await Preferences.get({
-      key: FileConstant.ArticleStorageKey,
-    });
-    console.log('saved article is..', value);
-    this.articles = value ? JSON.parse(value) : [];
+    this.articles = await this.articleService.loadArticles();
     this.filteredArticles = [...this.articles];
   }
   onImageError(event: any) {
@@ -88,18 +86,7 @@ export class HomePage implements OnInit {
   }
 
   async removeArticle(articleId: string | undefined) {
-    const { value } = await Preferences.get({
-      key: FileConstant.ArticleStorageKey,
-    });
-    let articles: Article[] = value ? JSON.parse(value) : [];
-
-    articles = articles.filter((article) => article.id !== articleId);
-
-    await Preferences.set({
-      key: FileConstant.ArticleStorageKey,
-      value: JSON.stringify(articles),
-    });
-    console.log('Article deleted successfully!');
+    await this.articleService.removeArticle(articleId);
     this.loadArticles();
   }
 

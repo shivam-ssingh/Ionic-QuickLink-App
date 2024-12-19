@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Article } from 'src/app/models/article.model';
 import { Preferences } from '@capacitor/preferences';
@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { environment } from 'src/environments/environment.development';
+import { ArticleService } from 'src/app/services/article.service';
 
 @Component({
   selector: 'app-add-link',
@@ -17,17 +18,16 @@ import { environment } from 'src/environments/environment.development';
 export class AddLinkPage implements OnInit {
   selectedTags: string[] = [];
   linkForm: FormGroup;
-  private apiUrl = 'https://api.linkpreview.net/';
 
   constructor(
     private modalController: ModalController,
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private articleService: ArticleService
   ) {}
 
   ngOnInit() {
     this.linkForm = this.formBuilder.group({
-      url: [''],
+      url: ['', [Validators.required, Validators.pattern('https?://.*')]],
       description: [''],
     });
   }
@@ -45,54 +45,12 @@ export class AddLinkPage implements OnInit {
   }
 
   async onSubmit() {
-    const { value } = await Preferences.get({
-      key: FileConstant.ArticleStorageKey,
-    });
-    let articles: Article[] = [];
-    if (value) {
-      articles = JSON.parse(value);
-    }
-    const metadataFromURL = await this.extractMetadata(this.linkForm.value.url);
-
-    const newArticle: Article = {
-      id: uuidv4(),
-      url: this.linkForm.value.url,
-      title: this.linkForm.value.description,
-      description: this.linkForm.value.description,
-      dateAdded: new Date(),
-      tags: this.selectedTags,
-      metadata: {
-        extractedTitle: metadataFromURL.title,
-        extractedDescription: metadataFromURL.description,
-        extractedImage: metadataFromURL.image,
-      },
-    };
-    console.log('new article is........', newArticle);
-
-    articles.push(newArticle);
-    await Preferences.set({
-      key: FileConstant.ArticleStorageKey,
-      value: JSON.stringify(articles),
-    });
-    console.log('saved succesfully in storage!');
-    this.modalController.dismiss({ refresh: true });
-  }
-
-  // setMetaData(url: string) {
-  //   this.extractMetadata(url).subscribe((data) => {
-  //     return {
-  //       extractedTitle: data.title,
-  //       extractedDescription: data.description,
-  //       extractedImage: data.image,
-  //     };
-  //   });
-  // }
-  async extractMetadata(url: string) {
-    return await firstValueFrom(
-      this.http.get<any>(
-        `${this.apiUrl}?key=${environment.METADATA_KEY}&q=${url}`
-      )
+    await this.articleService.saveArticle(
+      this.linkForm.value.url,
+      this.linkForm.value.description,
+      this.selectedTags
     );
+    this.modalController.dismiss({ refresh: true });
   }
   cancel() {
     this.modalController.dismiss();
