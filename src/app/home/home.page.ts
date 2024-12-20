@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { AddLinkPage } from '../pages/add-link/add-link.page';
 import { FileConstant } from '../models/constants';
 import { Preferences } from '@capacitor/preferences';
@@ -9,6 +9,7 @@ import { ViewArticlePage } from '../pages/view-article/view-article.page';
 import { ArticleService } from '../services/article.service';
 import { EditArticlePage } from '../pages/edit-article/edit-article.page';
 import { PhotoService } from '../services/photo.service';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Component({
   selector: 'app-home',
@@ -24,10 +25,16 @@ export class HomePage implements OnInit {
     private modalController: ModalController,
     private alertController: AlertController,
     private articleService: ArticleService,
-    private photoService: PhotoService
+    private photoService: PhotoService,
+    private platform: Platform
   ) {}
 
   async ngOnInit() {
+    // await this.platform.ready();
+    // await SplashScreen.show({
+    //   showDuration: 2000,
+    //   autoHide: true,
+    // });
     this.loadArticles();
   }
 
