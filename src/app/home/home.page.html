@@ -72,6 +72,10 @@
             <ion-label>{{ tag }}</ion-label>
           </ion-chip>
         </ng-container>
+
+        <ion-button slot="end" (click)="openEditLinkModal($event,article)"
+          >Edit</ion-button
+        >
       </ion-item>
 
       <ion-item-options side="end">

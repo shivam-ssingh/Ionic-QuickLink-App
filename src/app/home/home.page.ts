@@ -7,6 +7,7 @@ import { Article } from '../models/article.model';
 import { Share } from '@capacitor/share';
 import { ViewArticlePage } from '../pages/view-article/view-article.page';
 import { ArticleService } from '../services/article.service';
+import { EditArticlePage } from '../pages/edit-article/edit-article.page';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +40,23 @@ export class HomePage implements OnInit {
   async openAddLinkModal() {
     const modal = await this.modalController.create({
       component: AddLinkPage,
+    });
+    modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data?.refresh) {
+      this.reloadData();
+    }
+  }
+
+  async openEditLinkModal(event: Event, article: Article) {
+    event.stopPropagation();
+
+    const modal = await this.modalController.create({
+      component: EditArticlePage,
+      componentProps: {
+        article: article,
+      },
     });
     modal.present();
 

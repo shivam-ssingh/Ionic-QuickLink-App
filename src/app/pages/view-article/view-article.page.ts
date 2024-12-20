@@ -24,7 +24,8 @@ export class ViewArticlePage implements OnInit {
   constructor(private modalController: ModalController) {}
 
   async ngOnInit() {
-    this.geminiCall();
+    console.log('view article.....', this.article);
+    // this.geminiCall();
   }
 
   async openLink() {
@@ -48,15 +49,15 @@ export class ViewArticlePage implements OnInit {
     this.modalController.dismiss();
   }
 
-  async geminiCall() {
-    const genAI = new GoogleGenerativeAI(environment.API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    const prompt = `Summarize this website content: ${this.article.url}. Reply with plain content, I'll be using it to display on my angular app.`;
-    const result = await model.generateContent(prompt);
-    this.textResponse = result.response.text();
-    if (this.textResponse) {
-      this.showAIPreview = true;
-    }
-    console.log('gemini call.........', result.response.text());
-  }
+  // async geminiCall() {
+  //   const genAI = new GoogleGenerativeAI(environment.API_KEY);
+  //   const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  //   const prompt = `Summarize this website content: ${this.article.url}. Reply with plain content, I'll be using it to display on my angular app.`;
+  //   const result = await model.generateContent(prompt);
+  //   this.textResponse = result.response.text();
+  //   if (this.textResponse) {
+  //     this.showAIPreview = true;
+  //   }
+  //   console.log('gemini call.........', result.response.text());
+  // }
 }

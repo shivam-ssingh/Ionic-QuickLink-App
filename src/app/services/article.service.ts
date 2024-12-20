@@ -63,7 +63,54 @@ export class ArticleService {
     console.log('Article saved successfully');
   }
 
+  async editArticle(
+    id: string,
+    url: string,
+    description: string,
+    selectedTags: string[]
+  ) {
+    let storedArticles = await this.loadArticles();
+    const metadataResponse = await firstValueFrom(
+      this.metaDataService.extractMetadata(url)
+    );
+    let savedArticleWithId: Article[] = storedArticles.filter(
+      (article) => article.id == id
+    );
+    let savedArticleIndex = storedArticles.findIndex(
+      (article) => article.id == id
+    );
+    console.log('saved article index ->', savedArticleIndex);
+    if (savedArticleWithId) {
+      let savedArticleToUpdate = savedArticleWithId[0];
+      savedArticleToUpdate = {
+        url: url,
+        title: description,
+        description: description,
+        dateAdded: new Date(),
+        tags: selectedTags,
+        metadata: {
+          extractedTitle: metadataResponse.title,
+          extractedDescription: metadataResponse.description,
+          extractedImage: metadataResponse.image,
+        },
+      };
+      console.log('updated article is........', savedArticleToUpdate);
+      storedArticles.splice(savedArticleIndex, 1, savedArticleToUpdate);
+      await this.addArticle(storedArticles);
+      console.log('Article saved successfully');
+    }
+  }
+
   private async addArticle(articles: Article[]) {
+    console.log('article pused to save are........', articles);
+    await Preferences.set({
+      key: FileConstant.ArticleStorageKey,
+      value: JSON.stringify(articles),
+    });
+    console.log('saved succesfully in storage!');
+  }
+
+  private async updatedArticle(articles: Article[]) {
     console.log('article pused to save are........', articles);
     await Preferences.set({
       key: FileConstant.ArticleStorageKey,

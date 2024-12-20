@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'view-article',
     loadChildren: () => import('./pages/view-article/view-article.module').then( m => m.ViewArticlePageModule)
   },
+  {
+    path: 'edit-article',
+    loadChildren: () => import('./pages/edit-article/edit-article.module').then( m => m.EditArticlePageModule)
+  },
 ];
 
 @NgModule({
