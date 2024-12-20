@@ -61,4 +61,14 @@
       </ion-button>
     </div>
   </form>
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="addPhotoToGallery()" title="Photo for 404">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div *ngIf="userCustomPhoto && userCustomPhoto.webviewPath">
+    <p>Your custom image for the thumbnail</p>
+    <ion-img class="viewImage" [src]="userCustomPhoto.webviewPath"></ion-img>
+  </div>
 </ion-content>

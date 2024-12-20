@@ -10,6 +10,8 @@ import {
   HarmBlockThreshold,
   HarmCategory,
 } from '@google/generative-ai';
+import { UserPhoto } from 'src/app/models/photo.model';
+import { PhotoService } from 'src/app/services/photo.service';
 
 @Component({
   selector: 'app-view-article',
@@ -18,13 +20,21 @@ import {
 })
 export class ViewArticlePage implements OnInit {
   @Input() article: Article;
+  customPhoto: UserPhoto;
+
   textResponse: string = '';
   showAIPreview: boolean = false;
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    private modalController: ModalController,
+    private photoService: PhotoService
+  ) {}
 
   async ngOnInit() {
     console.log('view article.....', this.article);
+    this.customPhoto = await this.photoService.loadSavedArticlePhoto(
+      this.article
+    );
     // this.geminiCall();
   }
 

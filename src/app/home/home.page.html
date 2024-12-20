@@ -51,7 +51,7 @@
       <ion-item (click)="viewArticleDetails(article)">
         <ion-thumbnail slot="start" *ngIf="article.metadata?.extractedImage">
           <ion-img
-            [src]="article.metadata?.extractedImage ||  '../../assets/Article.png'"
+            [src]="article.userPhoto?.webviewPath || article.metadata?.extractedImage ||  '../../assets/Article.png'"
             (ionError)="onImageError($event)"
           ></ion-img>
         </ion-thumbnail>

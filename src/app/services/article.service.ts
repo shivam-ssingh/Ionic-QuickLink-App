@@ -5,6 +5,7 @@ import { Article } from '../models/article.model';
 import { v4 as uuidv4 } from 'uuid';
 import { MetadataService } from './metadata.service';
 import { firstValueFrom, switchMap } from 'rxjs';
+import { UserPhoto } from '../models/photo.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,12 @@ export class ArticleService {
     console.log('Article deleted successfully!');
   }
 
-  async saveArticle(url: string, description: string, selectedTags: string[]) {
+  async saveArticle(
+    url: string,
+    description: string,
+    selectedTags: string[],
+    userImage: UserPhoto
+  ) {
     let storedArticles = await this.loadArticles();
     const metadataResponse = await firstValueFrom(
       this.metaDataService.extractMetadata(url)
@@ -54,6 +60,7 @@ export class ArticleService {
         extractedDescription: metadataResponse.description,
         extractedImage: metadataResponse.image,
       },
+      userPhoto: userImage,
     };
 
     console.log('new article is........', newArticle);

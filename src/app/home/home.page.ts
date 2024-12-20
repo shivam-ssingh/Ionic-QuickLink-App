@@ -8,6 +8,7 @@ import { Share } from '@capacitor/share';
 import { ViewArticlePage } from '../pages/view-article/view-article.page';
 import { ArticleService } from '../services/article.service';
 import { EditArticlePage } from '../pages/edit-article/edit-article.page';
+import { PhotoService } from '../services/photo.service';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,8 @@ export class HomePage implements OnInit {
   constructor(
     private modalController: ModalController,
     private alertController: AlertController,
-    private articleService: ArticleService
+    private articleService: ArticleService,
+    private photoService: PhotoService
   ) {}
 
   async ngOnInit() {
@@ -32,6 +34,7 @@ export class HomePage implements OnInit {
   async loadArticles() {
     this.articles = await this.articleService.loadArticles();
     this.filteredArticles = [...this.articles];
+    await this.photoService.loadAllSavedArticlePhoto(this.articles);
   }
   onImageError(event: any) {
     event.target.src = FileConstant.ErrorImagePath;

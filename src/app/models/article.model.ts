@@ -1,3 +1,5 @@
+import { UserPhoto } from './photo.model';
+
 export interface Article {
   id?: string;
   url: string;
@@ -11,4 +13,5 @@ export interface Article {
     extractedDescription?: string;
     extractedImage?: string;
   };
+  userPhoto?: UserPhoto;
 }

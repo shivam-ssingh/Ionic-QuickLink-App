@@ -21,7 +21,8 @@
 <ion-content class="ion-padding">
   <ion-card>
     <ion-img
-      [src]="article.metadata?.extractedImage"
+      class="viewImage"
+      [src]="customPhoto.webviewPath || article.metadata?.extractedImage "
       (ionError)="onImageError($event)"
       (click)="openLink()"
     ></ion-img>

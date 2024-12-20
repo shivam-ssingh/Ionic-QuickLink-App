@@ -9,6 +9,8 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { environment } from 'src/environments/environment.development';
 import { ArticleService } from 'src/app/services/article.service';
+import { PhotoService } from 'src/app/services/photo.service';
+import { UserPhoto } from 'src/app/models/photo.model';
 
 @Component({
   selector: 'app-add-link',
@@ -18,11 +20,12 @@ import { ArticleService } from 'src/app/services/article.service';
 export class AddLinkPage implements OnInit {
   selectedTags: string[] = [];
   linkForm: FormGroup;
-
+  userCustomPhoto: UserPhoto;
   constructor(
     private modalController: ModalController,
     private formBuilder: FormBuilder,
-    private articleService: ArticleService
+    private articleService: ArticleService,
+    private photoService: PhotoService
   ) {}
 
   ngOnInit() {
@@ -48,11 +51,16 @@ export class AddLinkPage implements OnInit {
     await this.articleService.saveArticle(
       this.linkForm.value.url,
       this.linkForm.value.description,
-      this.selectedTags
+      this.selectedTags,
+      this.userCustomPhoto
     );
     this.modalController.dismiss({ refresh: true });
   }
   cancel() {
     this.modalController.dismiss();
+  }
+
+  async addPhotoToGallery() {
+    this.userCustomPhoto = await this.photoService.addNewToGallery();
   }
 }
