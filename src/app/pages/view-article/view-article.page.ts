@@ -4,7 +4,6 @@ import { Share } from '@capacitor/share';
 import { ModalController } from '@ionic/angular';
 import { Article } from 'src/app/models/article.model';
 import { FileConstant } from 'src/app/models/constants';
-import { environment } from 'src/environments/environment.development';
 import {
   GoogleGenerativeAI,
   HarmBlockThreshold,

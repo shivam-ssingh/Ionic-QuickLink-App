@@ -7,7 +7,6 @@ import { FileConstant } from 'src/app/models/constants';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { environment } from 'src/environments/environment.development';
 import { ArticleService } from 'src/app/services/article.service';
 import { PhotoService } from 'src/app/services/photo.service';
 import { UserPhoto } from 'src/app/models/photo.model';
