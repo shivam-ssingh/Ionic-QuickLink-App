@@ -22,7 +22,7 @@
   <ion-card>
     <ion-img
       class="viewImage"
-      [src]="customPhoto.webviewPath || article.metadata?.extractedImage "
+      [src]="customPhoto?.webviewPath || article.metadata?.extractedImage "
       (ionError)="onImageError($event)"
       (click)="openLink()"
     ></ion-img>
