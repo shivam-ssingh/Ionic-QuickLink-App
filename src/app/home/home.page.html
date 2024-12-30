@@ -5,6 +5,15 @@
       <ion-button (click)="openAddLinkModal()">
         <ion-icon name="add-outline"></ion-icon>
       </ion-button>
+      <ion-button (click)="downloadAllLinks()">
+        <ion-icon name="download-outline"></ion-icon>
+      </ion-button>
+      <ion-button
+        *ngIf="articles && articles.length > 0"
+        (click)="clearAllLinks()"
+      >
+        <ion-icon name="nuclear-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

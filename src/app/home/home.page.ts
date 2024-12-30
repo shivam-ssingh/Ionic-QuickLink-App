@@ -10,6 +10,7 @@ import { ArticleService } from '../services/article.service';
 import { EditArticlePage } from '../pages/edit-article/edit-article.page';
 import { PhotoService } from '../services/photo.service';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { PdfExportService } from '../services/pdf-export.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export class HomePage implements OnInit {
     private alertController: AlertController,
     private articleService: ArticleService,
     private photoService: PhotoService,
-    private platform: Platform
+    private platform: Platform,
+    private pdfExportService: PdfExportService
   ) {}
 
   async ngOnInit() {
@@ -113,8 +115,32 @@ export class HomePage implements OnInit {
     await alert.present();
   }
 
+  async clearAllLinks() {
+    const alert = await this.alertController.create({
+      header: 'Confirm Deleting all ',
+      message: 'Are you sure you want to delete all the articles?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.removeAllArticles();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
   async removeArticle(articleId: string | undefined) {
     await this.articleService.removeArticle(articleId);
+    this.loadArticles();
+  }
+  async removeAllArticles() {
+    await this.articleService.removeAllArticles();
     this.loadArticles();
   }
 
@@ -158,5 +184,9 @@ export class HomePage implements OnInit {
   clearTagSearch() {
     this.filteredArticles = [...this.articles];
     this.showClearTagSearchButton = false;
+  }
+
+  downloadAllLinks() {
+    this.pdfExportService.exportToPdf(this.articles);
   }
 }

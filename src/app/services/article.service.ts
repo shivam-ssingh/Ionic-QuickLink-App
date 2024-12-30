@@ -38,6 +38,12 @@ export class ArticleService {
     console.log('Article deleted successfully!');
   }
 
+  async removeAllArticles() {
+    Preferences.remove({
+      key: FileConstant.ArticleStorageKey,
+    });
+    console.log('Article completely removed!');
+  }
   async saveArticle(
     url: string,
     description: string,
